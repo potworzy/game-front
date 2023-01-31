@@ -4,7 +4,8 @@ import { AuthComponent } from './auth/auth.component';
 import { GameComponent } from './game/game.component';
 
 const routes: Routes = [
-  { path: 'auth', component: AuthComponent },
+  { path: 'auth/login', component: AuthComponent, data: {isLogin: true} },
+  { path: 'auth/signup', component: AuthComponent, data: {isLogin: false} },
   { path: 'game', component: GameComponent}
 ];
 

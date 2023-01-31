@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../environment/environment';
 
@@ -16,10 +16,19 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  signup(email: string, password: string) {
+  login(email: string, password: string) {
     return this.http.post<AuthResponseData>(environment.api + "/api/v1/auth/login", {
       email: email,
       password: password,
+    });
+  }
+  
+  signup(email: string, name: string, password: string, confirmPassword: string) {
+    return this.http.post<AuthResponseData>(environment.api + "/api/v1/auth/register", {
+      email: email,
+      name: name,
+      password: password,
+      confirmPassword: confirmPassword
     });
   }
 }

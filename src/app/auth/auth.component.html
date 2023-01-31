@@ -1,46 +1,53 @@
-<div class="w-full flex items-center justify-center" *ngIf=(!isLoginMode)>
-  <form #registerForm="ngForm">
-    <label class="block rounded-lg shadow-lg w-fit mt-6 pl-6 pr-6 pb-4">
-      <span class="tex-gray-700 pl-4">e-mail</span>
-      <input type="email" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md" name="email"
-      ngModel required email>
-      <span class="tex-gray-700 pl-4">name</span>
-      <input type="text" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md" name="name"
-      ngModel required>
-      <span class="tex-gray-700 pl-4">password</span>
-      <input type="password" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md"  name="password"
-      ngModel required
-      minlength="6">
-      <span class="tex-gray-700 pl-4">repeat password</span>
-      <input type="password" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md" name="confirmPassword"
-      ngModel required>
-      <div class="pl-4">
-        <button  [disabled]="!registerForm.valid" class="bg-east-bay-500 px-3 pt-2 pb-2.5 rounded-md transition duration-300" type="submit" >create user</button>
-      </div>  
-    </label>
-  </form>
-</div>
+<app-loading *ngIf="isLoading"></app-loading>
+<div *ngIf="!isLoading">
+  <div class="w-full flex items-center justify-center" *ngIf=(!isLoginMode)>
+    
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+      <div class="text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 w-fit mt-6 pt-3 pl-6 pr-6 pb-4 w-full flex items-center justify-start" role="alert" *ngIf="errors.length">
+      <ul>
+        <li class="font-small" *ngFor="let err of errors">{{ err }}</li>
+      </ul>
+      </div>
+      <label class="block rounded-lg shadow-lg w-fit mt-6 pl-6 pr-6 pb-4">
+        <span class="tex-gray-700 pl-4">e-mail</span>
+        <input type="email" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md" name="email" ngModel required>
+        <span class="tex-gray-700 pl-4">name</span>
+        <input type="text" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md" name="name"
+        ngModel required>
+        <span class="tex-gray-700 pl-4">password</span>
+        <input type="password" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md"  name="password"
+        ngModel required minlength="6">
+        <span class="tex-gray-700 pl-4">repeat password</span>
+        <input type="password" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-east-bay-100 rounded-md shadow-md" name="confirmPassword" ngModel required>
+        <div class="pl-4">
+          <button [disabled]="!registerForm.valid" class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300" type="submit">sign up</button>
+        </div>  
+      </label>
+    </form>
+  </div>
 
+  <div class="w-full flex items-center justify-center" *ngIf=(isLoginMode)>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <div class="text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 w-fit mt-6 pt-3 pl-6 pr-6 pb-4 w-full flex items-center justify-start" role="alert" *ngIf="errors.length">
+      <div class="font-small" >{{ errors }}</div>
+    </div>
+      <label class="block rounded-lg shadow-lg w-fit mt-6 pl-6 pr-6 pb-4">
+        <span class="tex-gray-700 pl-4">e-mail</span>
+        <input type="email" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-gray-100 rounded-md" name="email" ngModel required>
+        <span class="tex-gray-700 pl-4">password</span>
+        <input type="password" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-gray-100 rounded-md" name="password" ngModel required>
+        <div class="pl-4">
+          <button [disabled]="!loginForm.valid" class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300" type="submit">login</button>
+        </div>  
+      </label>
+    </form>
+  </div>
 
-
-<div class="w-full flex items-center justify-center" *ngIf=(isLoginMode)>
-  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-    <label class="block rounded-lg shadow-lg w-fit mt-6 pl-6 pr-6 pb-4">
-      <span class="tex-gray-700 pl-4">e-mail</span>
-      <input type="email" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-gray-100 rounded-md" name="email" ngModel>
-      <span class="tex-gray-700 pl-4">password</span>
-      <input type="password" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-gray-100 rounded-md" name="password" ngModel>
-      <div class="pl-4">
-        <button [disabled]="!loginForm.valid" class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300" type="submit">login</button>
-      </div>  
-    </label>
-  </form>
-</div>
-
-<div class="w-full flex items-center justify-center">
-  <button 
-    class="bg-yellow-300 hover:bg-yellow-400 my-10 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300" 
-    (click)="onSwitchMode()">
-    {{isLoginMode ? 'Want to register?' : 'Want to login?'}}
-  </button>
+  <div class="w-full flex items-center justify-center">
+    <button 
+      class="bg-yellow-300 hover:bg-yellow-400 my-10 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300" 
+      (click)="onSwitchMode()">
+      {{isLoginMode ? 'Want to register?' : 'Want to login?'}}
+    </button>
+  </div>
 </div>
