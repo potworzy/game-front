@@ -16,15 +16,16 @@
         <a routerLink="/">Home</a>
       </div>
       <div class="hidden md:flex items-center">
-        <a routerLink="game">Game</a>
+        <a routerLink="game" *ngIf="isAuthenticated">Game</a>
       </div>
   </div>
   <!-- right side menu -->
     <div class="hidden md:flex w-100 pl-8 justify-between">
       <div class="flex items-center space-x-4">
-        <a routerLink="auth/login">Login</a>
-        <a routerLink="auth/signup"><span class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300">Signup</span>
+        <a routerLink="auth/login" *ngIf="!isAuthenticated">Login</a>
+        <a routerLink="auth/signup" *ngIf="!isAuthenticated"><span class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300">Signup</span>
         </a>
+        <a *ngIf="isAuthenticated">Logout</a>
       </div>
     </div>
     <!-- mobile button -->
@@ -45,9 +46,10 @@
   <div class="md:hidden">
     <div class="pb-4">
       <a routerLink="/" class="block text-sm py-2 px-6 hover:bg-yellow-100 pl-9">Home</a>
-      <a routerLink="game" class="block text-sm py-2 px-6 hover:bg-yellow-100 pl-9" (selectAuth)="onSelectAuth">Game</a>
-      <a routerLink="auth" class="block text-sm py-2 px-6 hover:bg-yellow-100 pl-9">Login</a>
-      <a routerLink="auth" class="block text-sm py-2 px-6 hover:bg-yellow-100"><span class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300">Signup</span></a>
+      <a routerLink="game" class="block text-sm py-2 px-6 hover:bg-yellow-100 pl-9" *ngIf="isAuthenticated">Game</a>
+      <a routerLink="auth/login" class="block text-sm py-2 px-6 hover:bg-yellow-100 pl-9" *ngIf="!isAuthenticated">Login</a>
+      <a routerLink="auth/signup" class="block text-sm py-2 px-6 hover:bg-yellow-100" *ngIf="!isAuthenticated"><span class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300">Signup</span></a>
+      <a class="block text-sm py-2 px-6 hover:bg-yellow-100 pl-9" *ngIf="isAuthenticated">Logout</a>
     </div>
   </div>
 </nav>

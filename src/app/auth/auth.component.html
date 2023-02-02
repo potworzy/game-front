@@ -29,7 +29,9 @@
   <div class="w-full flex items-center justify-center" *ngIf=(isLoginMode)>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
       <div class="text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 w-fit mt-6 pt-3 pl-6 pr-6 pb-4 w-full flex items-center justify-start" role="alert" *ngIf="errors.length">
-      <div class="font-small" >{{ errors }}</div>
+      <ul>
+        <li class="font-small" *ngFor="let err of errors">{{ err }}</li>
+      </ul>
     </div>
       <label class="block rounded-lg shadow-lg w-fit mt-6 pl-6 pr-6 pb-4">
         <span class="tex-gray-700 pl-4">e-mail</span>
