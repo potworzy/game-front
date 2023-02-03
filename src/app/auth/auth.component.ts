@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { ActivatedRoute, Route, Router } from "@angular/router";
-import { CookieService } from "ngx-cookie-service";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
 import { AuthResponseData, AuthService } from "./auth.service";
 
@@ -15,7 +14,7 @@ export class AuthComponent implements OnInit, OnDestroy{
   isLoading: boolean = false;
   errors: string[] = [];
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private router:Router, private cookie: CookieService){}
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router:Router){}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode

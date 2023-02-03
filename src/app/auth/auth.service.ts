@@ -1,9 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../environment/environment';
-import { Subject, tap } from 'rxjs';
+import { BehaviorSubject, Subject, tap } from 'rxjs';
 import { User } from './user.model';
-import { CookieService } from 'ngx-cookie-service';
 
 export interface AuthResponseData {
   id: string,
@@ -19,12 +18,15 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService implements OnInit {
-  private cookieAuth: string = '';
-  private cookieRefresh: string = '';
 
-  user = new Subject<User>();
+  user: BehaviorSubject<User> = new BehaviorSubject<User>({
+    email: '',
+    id: '',
+    name: '',
+    refreshToken: '',
+  });
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     
@@ -34,14 +36,23 @@ export class AuthService implements OnInit {
     return this.http.post<AuthResponseData>(environment.api + "/api/v1/auth/login", {
       email: email,
       password: password,
-    }).pipe(tap(responseData => {
-      this.handleAuthentication(responseData.email, responseData.name, responseData.id)
+    }, { withCredentials: true }).pipe(tap(responseData => {
+      console.log('RESP', responseData)
+      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken)
+    }));
+  }
+
+  loginRefresh() {
+    return this.http.get<AuthResponseData>(environment.api + "/api/v1/auth/refresh", { withCredentials: true }).pipe(tap(responseData => {
+      console.log('RESP REFRESH', responseData)
+      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken)
     }));
   }
   
-  private handleAuthentication(email:string, name:string, id:string) {
-    const user = new User(email, name, id, new Date());
+  private handleAuthentication(email:string, name:string, id:string, refreshToken: string) {
+    const user = new User(email, id, name, refreshToken);
     this.user.next(user)
+    localStorage.setItem('user', JSON.stringify(user))
   }
 
   signup(email: string, name: string, password: string, confirmPassword: string) {
@@ -51,5 +62,13 @@ export class AuthService implements OnInit {
       password: password,
       confirmPassword: confirmPassword
     });
+  }
+
+  myGames() {
+    return this.http.get(environment.api + "/api/v1/game/mygames", { withCredentials: true }).pipe(tap(responseData => {
+      let game = responseData
+      console.log('MY GAMES', game);
+
+    }));
   }
 }
