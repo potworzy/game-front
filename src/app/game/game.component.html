@@ -1,1 +1,29 @@
-<p>game works!</p>
+<div class="w-full flex items-center justify-center">
+    <form #createGameForm="ngForm" (ngSubmit)="onSubmit(createGameForm)">
+      <div class="text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 w-fit mt-6 pt-3 pl-6 pr-6 pb-4 w-full flex items-center justify-start" role="alert" *ngIf="errors.length">
+      <ul>
+        <li class="font-small" *ngFor="let err of errors">{{ err }}</li>
+      </ul>
+    </div>
+      <label class="block rounded-lg shadow-lg w-fit mt-6 pl-6 pr-6 pb-4">
+        <span class="tex-gray-700 pl-4">title</span>
+        <input type="text" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-gray-100 rounded-md" name="title" ngModel required>
+        <span class="tex-gray-700 pl-4">description</span>
+        <input type="text" class="form-input mt-1 block border-solid border-gray-400 m-4 p-2 bg-gray-100 rounded-md" name="description" ngModel>
+        <div class="pl-4">
+          <button [disabled]="!createGameForm.valid" class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300" type="submit">create</button>
+        </div>  
+      </label>
+    </form>
+</div>
+
+<div class="w-full flex items-center justify-center">
+  <ul>
+    <li *ngFor="let game of gamesList">
+      <div class="w-full flex items-left justify-center">
+          <strong>{{game.title}}</strong>
+          {{game.description}}
+      </div>
+    </li>
+  </ul>
+</div>

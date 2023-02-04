@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { GameResponseData, GameService } from './game.service';
 
 @Component({
   selector: 'app-game',
@@ -7,24 +10,38 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  constructor(private authService: AuthService) { }
-  ngOnInit(): void {
-    console.log('START')
+  errors: string[] = [];
 
-    const a = this.authService.myGames().subscribe({
+  gamesList:GameResponseData[] = []
+
+  constructor(private authService: AuthService, private gameService: GameService) { }
+  ngOnInit(): void {
+    const a = this.gameService.myGames().subscribe({
       next: (data) => {
-        console.log(data)
+        if(Array.isArray(data)) this.gamesList = [...data];
       },
       error: (error) => {
-        if (error.status === 401) {
-          this.authService.loginRefresh().subscribe({
-            
-          })
-        }
-        console.log('taki bląd',error)
+        console.log(error)
       }
     })
     console.log('AAAAA', a)
   }
+  onSubmit(form:NgForm){
+    if(!form.valid) return;
+    const title = form.value.title;
+    const description = form.value.description;
 
+    let gameDataObservable: Observable<GameResponseData>;
+
+    gameDataObservable = this.gameService.createGame(title, description);
+
+    gameDataObservable.subscribe({
+      next: (responseData) => {
+        console.log(responseData)
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
 }
