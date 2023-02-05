@@ -10,7 +10,7 @@ export interface AuthResponseData {
   email: string,
   authToken:string,
   refreshToken: string,
-  expiresIn: string,
+  expiresAuth: string,
   registered?: boolean
 }
 
@@ -24,9 +24,8 @@ export class AuthService implements OnInit {
     id: '',
     name: '',
     refreshToken: '',
+    expiresAuth: ''
   });
-
-  expiriesIn = ''
 
   constructor(private http: HttpClient) { }
 
@@ -40,30 +39,25 @@ export class AuthService implements OnInit {
       password: password,
     },{withCredentials:true}).pipe(tap(responseData => {
       console.log('RESP', responseData)
-      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken)
+      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken, responseData.expiresAuth)
     }));
   }
 
   loginRefresh() {
     return this.http.get<AuthResponseData>(environment.api + "/api/v1/auth/refresh").pipe(tap(responseData => {
       console.log('RESP REFRESH', responseData)
-      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken)
+      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken, responseData.expiresAuth)
     }));
   }
   
-  private async  handleAuthentication(email:string, name:string, id:string, refreshToken: string) {
-    const user = new User(email, id, name, refreshToken);
+  private handleAuthentication(email:string, name:string, id:string, refreshToken: string, expiresAuth: string) {
+    console.log('EXP', expiresAuth)
+    const user = new User(email, id, name, refreshToken, expiresAuth);
     this.user.next(user)
     localStorage.setItem('user', JSON.stringify(user))
+    
   }
-  private getExpiriesInAuth(){
-    return this.http.get(environment.api + "/api/v1/auth/user",{withCredentials: true}).pipe(tap({
-      next: (responseData) => {
-        console.log('EXP', responseData)
-        //this.expiriesIn = responseData.
-      }
-    }))
-  }
+  
 
   signup(email: string, name: string, password: string, confirmPassword: string) {
     return this.http.post<AuthResponseData>(environment.api + "/api/v1/auth/register", {

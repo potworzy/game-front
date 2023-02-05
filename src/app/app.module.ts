@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { CookieService } from 'ngx-cookie-service';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
     HeaderComponent,
     GameComponent,
     LoadingComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
