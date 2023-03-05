@@ -1,5 +1,5 @@
 <div class="w-full flex items-center justify-center">
-    <form #createGameForm="ngForm" (ngSubmit)="onSubmit(createGameForm)">
+    <form id="dropdown" #createGameForm="ngForm" (ngSubmit)="onSubmit(createGameForm)">
       <div class="text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 w-fit mt-6 pt-3 pl-6 pr-6 pb-4 w-full flex items-center justify-start" role="alert" *ngIf="errors.length">
       <ul>
         <li class="font-small" *ngFor="let err of errors">{{ err }}</li>
@@ -16,14 +16,10 @@
       </label>
     </form>
 </div>
-
-<div class="w-full flex items-center justify-center">
-  <ul>
-    <li *ngFor="let game of gamesList">
-      <div class="w-full flex items-left justify-center">
-          <strong>{{game.title}}</strong>
-          {{game.description}}
-      </div>
-    </li>
-  </ul>
+<div class="w-full flex items-center justify-center pt-10">
+  <div class="w-64 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white flex-col items-center justify-center">
+    <a routerLink="join/{{game.id}}" class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:text-yellow-400 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white" *ngFor="let game of gamesList">
+        <strong>{{game.title}}</strong> {{game.description}}
+    </a>
+  </div>
 </div>
