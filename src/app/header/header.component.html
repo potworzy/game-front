@@ -25,7 +25,7 @@
         <a routerLink="auth/login" *ngIf="!isAuthenticated">Login</a>
         <a routerLink="auth/signup" *ngIf="!isAuthenticated"><span class="bg-yellow-300 hover:bg-yellow-400 px-3 pt-2 pb-2.5 rounded-md shadow transition duration-300">Signup</span>
         </a>
-        <a *ngIf="isAuthenticated">Logout</a>
+        <a *ngIf="isAuthenticated" (click)="(logout())">Logout</a>
       </div>
     </div>
     <!-- mobile button -->

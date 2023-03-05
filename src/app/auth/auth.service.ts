@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { environment } from '../../environment/environment';
 import { BehaviorSubject, Subject, tap } from 'rxjs';
 import { User } from './user.model';
+import { Route, Router } from '@angular/router';
 
 export interface AuthResponseData {
   id: string,
@@ -18,6 +19,7 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService implements OnInit {
+  
 
   user: BehaviorSubject<User> = new BehaviorSubject<User>({
     email: '',
@@ -27,7 +29,7 @@ export class AuthService implements OnInit {
     expiresAuth: ''
   });
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     
@@ -43,8 +45,16 @@ export class AuthService implements OnInit {
   }
 
   loginRefresh() {
-    return this.http.get<AuthResponseData>(environment.api + "/api/v1/auth/refresh",{withCredentials:true}).pipe(tap(responseData => {
-      this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken, responseData.expiresAuth)
+    return this.http.get<AuthResponseData>(
+      environment.api + "/api/v1/auth/refresh",
+      { withCredentials: true })
+        .pipe(tap(responseData => {
+          this.handleAuthentication(
+            responseData.email,
+            responseData.name,
+            responseData.id,
+            responseData.refreshToken,
+            responseData.expiresAuth)
     }));
   }
   
@@ -64,5 +74,10 @@ export class AuthService implements OnInit {
     }).pipe(tap(responseData => {
       this.handleAuthentication(responseData.email, responseData.name, responseData.id, responseData.refreshToken, responseData.expiresAuth)
     }));
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.router.navigate(['/'])
   }
 }

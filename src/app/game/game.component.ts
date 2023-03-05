@@ -24,7 +24,6 @@ export class GameComponent implements OnInit {
         console.log(error)
       }
     })
-    console.log('AAAAA', a)
   }
   onSubmit(form:NgForm){
     if(!form.valid) return;
